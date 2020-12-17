@@ -7,6 +7,8 @@ import java.util.Set;
 @Table(name = "users") //This is for the actual name of the database table we are mapping to the class.
 public class User {
 
+
+
     @Id //This will map the primary key.
     @GeneratedValue(strategy = GenerationType.IDENTITY) //This will auto increment your primary key
     @Column(name = "id") //This is mapping the primary key to the id column in the table.
@@ -19,16 +21,10 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private Set<CardCollection> cardCollections;
+    private Set<TradingCard> cardCollection;
 
     //default constructor
     public User() {
-    }
-
-    //para constructor
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
     }
 
     public int getId() {
@@ -54,6 +50,15 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<TradingCard> getCardCollection() {
+        return cardCollection;
+    }
+
+    public void setCardCollection(Set<TradingCard> cardCollection) {
+        this.cardCollection = cardCollection;
+    }
+
 
 
     @Override

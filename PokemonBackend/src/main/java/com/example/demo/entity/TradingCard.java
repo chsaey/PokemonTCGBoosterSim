@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "trading_cards") //This is for the actual name of the database table we are mapping to the class.
 // When using lazy loading, we can tell Jackson to ignore helpful garbage hibernate adds to classes
 //Fixes the issues of serializing entities to/from the DB
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler",""})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", ""})
 public class TradingCard {
 
     @Id //This will map the primary key.
@@ -22,7 +22,7 @@ public class TradingCard {
     private int id;
 
     @Column(name = "name")
-    private String question;
+    private String name;
 
     @Column(name = "card_id")
     private String answer;
@@ -30,16 +30,22 @@ public class TradingCard {
     @Column(name = "image_link")
     private String imageLink;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) // Many flashcards can belong to one set
-    @OnDelete(action = OnDeleteAction.CASCADE) // One a set is deleted, cards of the set are also deleted
-    @JoinColumn(name = "collection_id", nullable = false) // foreign key, column to join on
-    @JsonIgnore// hide field from parser
-    private CardCollection cardCollection;
+    //Many to one -> A user can have many sets of flash cards
+    //Lazy fetchType meaning initialization is deferred as long as possible.
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)    // If a user is deleted, all sets belonging to them are also deleted.
+    @JoinColumn(name = "user_id", nullable = false)
+    // creates the column on which they join on, the foreign key. can't be null
+    @JsonIgnore // ignore field when serializing
+    private User user;
+
+    // supposedly allows us to input an integer rather then a user entity when creating a card set entitytt
+    @Column(name = "user_id", updatable = false, insertable = false)
+    private int userID;
 
     public TradingCard() {
 
     }
-
     public int getId() {
         return id;
     }
@@ -48,12 +54,12 @@ public class TradingCard {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getName() {
+        return name;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAnswer() {
@@ -72,15 +78,20 @@ public class TradingCard {
         this.imageLink = imageLink;
     }
 
-    public CardCollection getCollection() {
-        return cardCollection;
+    public User getUser() {
+        return user;
     }
 
-    public void setCollection(CardCollection cardCollection) {
-        this.cardCollection = cardCollection;
+    public void setUser(User user) {
+        this.user = user;
     }
 
+    public int getUserID() {
+        return userID;
+    }
 
-
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
 }
