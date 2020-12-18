@@ -31,7 +31,6 @@ public class TradingCardController {
 
     @PostMapping("/addCard")
     public TradingCard addCard(@RequestBody TradingCard card) {
-
         card.setId(0);
         myDAO.save(card);
         return card;

@@ -5,6 +5,7 @@ import HeaderComponent from './HeaderComponent';
 import HomeComponent from './HomeComponent';
 import Register from'./RegisterComponent';
 import CollectionComponent from'./CollectionComponent';
+import PackComponent from'./PackComponent';
 
 class RouterComponent extends Component {
     render() {
@@ -16,7 +17,8 @@ class RouterComponent extends Component {
                             <Route exact path="/"><HomeComponent /></Route>
                             <Route path="/Login"><Login /></Route>
                             <Route path="/Register"><Register /></Route>
-                            <Route path="/Collection"><CollectionComponent /></Route>
+                            <Route path="/Collection" component={CollectionComponent}/>
+                            <Route path="/BoosterPack"component={PackComponent}/>
                             </Switch>
                 </Router>
             </div>

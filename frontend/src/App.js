@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" stlye={{backgroundImage:"bg.jpg"}}>
       <header className="App-header">
       </header>
       <RouterComponent></RouterComponent>

@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.TradingCard;
+import com.example.demo.entity.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,13 @@ public class TradingCardIMPL implements MyDAO{
 
     @Override
     @Transactional //Defines the scope of a single database transaction.
-    public void save(Object collection) {
+    public void save(Object card) {
         Session currentSession = entityManager.unwrap(Session.class);
-        currentSession.saveOrUpdate(collection);
+        TradingCard temp = (TradingCard) card;
+        Query<Object> myQuery = currentSession.createQuery("from User where id like :i");
+        myQuery.setParameter("i",temp.getUserID());
+        temp.setUser((User) myQuery.getResultList().get(0));
+        currentSession.saveOrUpdate(temp);
     }
 
     @Override

@@ -1,54 +1,72 @@
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import "../Login.css";
-
-export default function RegisterComponent() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  function validateForm() {
-    return username.length > 0 && password.length > 0;
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
-
-  return (
+import React, { Component } from 'react';
+import { Formik, Form, Field } from 'formik';
+import UserDataService from '../dataservices/UserDataService';
 
 
-    <div className="Login">
-          <div style={{ opacity:1, color:"white", textAlign:"Center",fontSize:"72px"}}>Register</div>
-          <div class="container" style={{width:"400px",height:"400px", background: "rgba(0,0,0,0.90)", color:"white", marginTop:"100px"}}>
-    <div style={{opacity:1}}>
-      <br></br>
-      <br></br>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group size="lg" controlId="username">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            autoFocus
-            type="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()}>
-          Login
-        </Button>
-      </Form>
-      </div>
-    </div>
-    </div>
 
-  );
+class RegisterComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id:'',
+            userName: '',
+            password: '',
+            renderLogin: false
+        }
+        this.onSubmit = this.onSubmit.bind(this)
+    }
+
+
+
+    onSubmit(values) {
+        let user = {
+            userName: values.userName,
+            password: values.password,
+            renderLogin:true
+        }
+        UserDataService.createUser(user)
+        
+        alert("User created")
+
+    }
+
+    render() {
+        let {userName, password} = this.state
+        return (
+            <div className="base-container">
+                <br/>
+                <h2 className="header">Register</h2>
+                <div className="content">
+                    
+                    <Formik
+                        initialValues={{userName, password}}
+                        onSubmit={this.onSubmit}
+                        enableReinitialize={true}
+                    >
+                        {
+                            (props) => (
+                                <Form className="form">
+                                    <fieldset className="form-group">
+                                        <label>Username</label>
+                                        <Field className="form-control" type="text" name="userName" placeholder="userName" />
+                                    </fieldset>
+                                    <fieldset className="form-group">
+                                        <label>Password</label>
+                                        <Field className="form-control" type="text" name="password" placeholder="password" />
+                                    </fieldset>
+                                    <fieldset className="form-group">
+                                        <button className="btn" type="submit">Register</button>
+                                    </fieldset>
+                                    <br/>
+                                    <br/>
+                                </Form>
+                            )
+                        }
+                    </Formik>
+                </div>
+            </div>
+        )
+    }
 }
+
+export default RegisterComponent;

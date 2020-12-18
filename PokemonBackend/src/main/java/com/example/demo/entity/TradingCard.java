@@ -25,7 +25,7 @@ public class TradingCard {
     private String name;
 
     @Column(name = "card_id")
-    private String answer;
+    private String cardID;
 
     @Column(name = "image_link")
     private String imageLink;
@@ -39,13 +39,22 @@ public class TradingCard {
     @JsonIgnore // ignore field when serializing
     private User user;
 
-    // supposedly allows us to input an integer rather then a user entity when creating a card set entitytt
+    // supposedly allows us to input an integer rather then a user entity when creating a card set entity
     @Column(name = "user_id", updatable = false, insertable = false)
     private int userID;
 
     public TradingCard() {
 
     }
+
+    public String getCardID() {
+        return cardID;
+    }
+
+    public void setCardID(String cardID) {
+        this.cardID = cardID;
+    }
+
     public int getId() {
         return id;
     }
@@ -62,13 +71,6 @@ public class TradingCard {
         this.name = name;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
 
     public String getImageLink() {
         return imageLink;
